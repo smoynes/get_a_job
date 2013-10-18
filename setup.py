@@ -11,6 +11,7 @@ with open('LICENSE') as f:
 requirements = [
     'Flask==0.10.1',
     'Flask-RESTful==0.2.5',
+    'six == 1.2.0',
 ]
 
 test_requirements = [
