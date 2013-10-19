@@ -22,3 +22,9 @@ Development
 Running tests:
 
     $ python setup.py test
+
+Start the server:
+
+    $ python -m get_a_job.api
+    * Running on http://127.0.0.1:5000/
+    * Restarting with reloader
