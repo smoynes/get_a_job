@@ -1,22 +1,7 @@
 from flask import Flask, request, make_response
-from flask.ext.restful import Api, Resource, fields, marshal_with
+from flask.ext.restful import Resource, fields, marshal_with
 
-
-app = Flask(__name__)
-api = Api(app)
-
-
-class Job(object):
-    def __init__(self, number_one=None, number_two=None, status=None):
-        self.id = 1
-        self.number_one = number_one
-        self.number_two = number_two
-        self.status = status
-
-    @property
-    def links(self):
-        links = [{'href': '/jobs', 'rel': 'index'}]
-        return links
+from .models import db, Job
 
 
 class JobListResource(Resource):
@@ -43,11 +28,7 @@ class JobListResource(Resource):
         status = request.form['job[status]']
         number_one = request.form['job[number_one]']
         number_two = request.form['job[number_two]']
-        return Job(status, number_one, number_two)
-
-
-api.add_resource(JobListResource, '/jobs', '/')
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
+        job = Job(status, number_one, number_two)
+        db.session.add(job)
+        db.session.commit()
+        return job

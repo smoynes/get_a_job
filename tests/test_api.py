@@ -1,13 +1,19 @@
 import json
 import unittest
 
-import get_a_job
+from get_a_job import create_app
+from get_a_job.models import db
+
+SQLALCHEMY_DATABASE_URI = 'sqlite://'
 
 
 class TestCase(unittest.TestCase):
 
     def setUp(self):
-        self.app = get_a_job.app.test_client()
+        app = create_app(__name__)
+        self.app = app.test_client()
+        db.app = app
+        db.create_all()
 
     def deserialize(self, response):
         return json.loads(response)
@@ -24,7 +30,7 @@ class JobListTestCase(TestCase):
                 "number_two": None,
                 "status": None,
                 "links":[
-                    {"href":"/jobs","rel":"index"}
+                    {"href":"/jobs", "rel":"index"}
                 ]
             }
         }
