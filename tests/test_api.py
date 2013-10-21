@@ -3,9 +3,17 @@ import unittest
 
 import get_a_job
 
-class JobTestCase(unittest.TestCase):
+
+class TestCase(unittest.TestCase):
+
     def setUp(self):
         self.app = get_a_job.app.test_client()
+
+    def deserialize(self, response):
+        return json.loads(response)
+
+
+class JobListTestCase(TestCase):
 
     def test_get_index(self):
         response = self.app.get('/')
@@ -23,5 +31,13 @@ class JobTestCase(unittest.TestCase):
         job = self.deserialize(response.data)
         self.assertEquals(job, empty_job)
 
-    def deserialize(self, response):
-        return json.loads(response)
+    def test_post_job(self):
+        job = {
+            'job[status]': 'in_progress',
+            'job[number_one]': 1,
+            'job[number_two]': 2
+        }
+
+        response = self.app.post('/jobs', data=job)
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(response.headers.get('Location'), 'http://localhost/jobs/1')
