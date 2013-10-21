@@ -11,7 +11,9 @@ with open('LICENSE') as f:
 requirements = [
     'Flask==0.10.1',
     'Flask-RESTful==0.2.5',
+    # Undeclared dependency from Flask-RESTful
     'six == 1.2.0',
+    'Flask-SQLAlchemy==0.8.2',
 ]
 
 test_requirements = [
