@@ -2,7 +2,7 @@ import json
 import unittest
 
 from get_a_job import create_app
-from get_a_job.models import db
+from get_a_job.models import db, Job
 
 SQLALCHEMY_DATABASE_URI = 'sqlite://'
 
@@ -15,9 +15,15 @@ class TestCase(unittest.TestCase):
         db.app = app
         db.create_all()
 
+    def tearDown(self):
+        db.drop_all()
+
     def deserialize(self, response):
         return json.loads(response)
 
+    def assert_redirected(self, response, location):
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(response.headers.get('Location'), location)
 
 class JobListTestCase(TestCase):
 
@@ -45,5 +51,10 @@ class JobListTestCase(TestCase):
         }
 
         response = self.app.post('/jobs', data=job)
-        self.assertEquals(response.status_code, 302)
-        self.assertEquals(response.headers.get('Location'), 'http://localhost/jobs/1')
+        self.assert_redirected(response, 'http://localhost/jobs/1')
+        self.assert_persisted(id=1, job=Job(1, 2, 'in_progress'))
+
+    def assert_persisted(self, id, job):
+        jobs = Job.query.filter_by(id=id)
+        self.assertEqual(jobs.count(), 1)
+        self.assertEquals(jobs[0], job)
