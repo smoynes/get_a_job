@@ -37,3 +37,6 @@ nosetests.xml
 
 # virtualenv
 /env
+
+# sqlite database
+/dev.db
