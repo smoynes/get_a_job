@@ -1,7 +1,13 @@
 from flask import Flask, request, make_response
-from flask.ext.restful import Resource, fields, marshal_with
+from flask.ext.restful import Api, Resource, fields, marshal_with
 
 from .models import db, Job
+
+
+def configure_api(app):
+    api = Api(app)
+    api.add_resource(JobListResource, '/jobs', '/')
+    return api
 
 
 class JobListResource(Resource):
@@ -28,7 +34,7 @@ class JobListResource(Resource):
         status = request.form['job[status]']
         number_one = request.form['job[number_one]']
         number_two = request.form['job[number_two]']
-        job = Job(status, number_one, number_two)
+        job = Job(number_one, number_two, status)
         db.session.add(job)
         db.session.commit()
         return job

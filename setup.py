@@ -14,6 +14,8 @@ requirements = [
     # Undeclared dependency from Flask-RESTful
     'six == 1.2.0',
     'Flask-SQLAlchemy==0.8.2',
+    'Flask-Script==0.6.2',
+    'pysqlite==2.6.0',
 ]
 
 test_requirements = [

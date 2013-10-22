@@ -25,6 +25,7 @@ Running tests:
 
 Start the server:
 
-    $ python -m get_a_job
+    $ python manage.py create_db
+    $ python manage.py runserver
     * Running on http://127.0.0.1:5000/
     * Restarting with reloader
