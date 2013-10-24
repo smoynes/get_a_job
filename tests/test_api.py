@@ -20,6 +20,7 @@ class TestCase(unittest.TestCase):
     def tearDown(self):
         db.session.remove()
         db.drop_all()
+        os.remove(self.temp_db_file)
         os.close(self.temp_db_fd)
 
     def deserialize(self, response):
