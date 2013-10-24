@@ -1,5 +1,7 @@
 from flask.ext.sqlalchemy import SQLAlchemy
+
 db = SQLAlchemy()
+
 
 class Job(db.Model):
     id = db.Column(db.Integer, primary_key=True)
