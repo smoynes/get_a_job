@@ -13,9 +13,9 @@ requirements = [
     'Flask-RESTful==0.2.5',
     # Undeclared dependency from Flask-RESTful
     'six == 1.2.0',
-    'Flask-SQLAlchemy==0.8.2',
+    'Flask-SQLAlchemy==1.0',
     'Flask-Script==0.6.2',
-    'pysqlite==2.6.0',
+    'pysqlite==2.6.0,<2.7.0',
     'celery==3.0.24',
     'redis==2.8.0',
 ]
