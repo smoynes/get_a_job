@@ -16,6 +16,8 @@ requirements = [
     'Flask-SQLAlchemy==0.8.2',
     'Flask-Script==0.6.2',
     'pysqlite==2.6.0',
+    'celery==3.0.24',
+    'redis==2.8.0',
 ]
 
 test_requirements = [
