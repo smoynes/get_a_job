@@ -11,7 +11,10 @@ class TestCase(unittest.TestCase):
 
     def setUp(self):
         self.temp_db_fd, self.temp_db_file = tempfile.mkstemp(suffix='.db')
-        config = {'SQLALCHEMY_DATABASE_URI': 'sqlite:///' + self.temp_db_file}
+        config = {
+            'SQLALCHEMY_DATABASE_URI': 'sqlite:///' + self.temp_db_file,
+            'CELERY_BROKER_URL': 'redis://localhost/1'
+        }
         app = create_app(__name__, **config)
         db.app = app
         db.create_all()

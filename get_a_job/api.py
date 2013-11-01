@@ -1,14 +1,13 @@
 from flask import Flask, request, make_response
-from flask.ext.restful import Api, Resource, fields, marshal_with, abort
+from flask.ext.restful import Resource, fields, marshal_with, abort
 
 from .models import db, Job
 
 
-def configure_api(app):
-    api = Api(app)
+def configure_api(api):
     api.add_resource(JobListResource, '/jobs', '/')
     api.add_resource(JobResource, '/jobs/<int:job_id>')
-    return api
+
 
 RESOURCE_FIELDS = {
     'job': {
