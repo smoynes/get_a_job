@@ -3,7 +3,6 @@ from flask.ext.restful import Resource, fields, marshal_with, abort
 
 from .models import db, Job
 
-
 def configure_api(api):
     api.add_resource(JobListResource, '/jobs', '/')
     api.add_resource(JobResource, '/jobs/<int:job_id>')
@@ -43,10 +42,12 @@ class JobListResource(Resource):
         return response
 
     def create_job(self, request):
+        from .tasks import add_number
         status = request.form['job[status]']
         number_one = request.form['job[number_one]']
         number_two = request.form['job[number_two]']
         job = Job(number_one, number_two, status)
         db.session.add(job)
         db.session.commit()
+        add_number.delay(job)
         return job

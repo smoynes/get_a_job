@@ -25,7 +25,7 @@ def create_api(app):
 def create_celery(app=None):
     app = app or create_app(__name__)
     broker = app.config.get('CELERY_BROKER_URL') or 'redis://localhost/'
-    celery = Celery(app, broker=broker)
+    celery = Celery(broker=broker)
     celery.conf.update(app.config)
 
     TaskBase = celery.Task
@@ -33,9 +33,11 @@ def create_celery(app=None):
     class ContextBase(TaskBase):
         abstract = True
 
-        def __call__(self, *args, **kwargs):
+        def __call__(*args, **kwargs):
             with app.app_context():
                 return TaskBase.__call__(*args, **kwargs)
 
     celery.Task = ContextBase
     return celery
+
+celery = create_celery()

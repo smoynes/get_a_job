@@ -7,12 +7,14 @@ class Job(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     number_one = db.Column(db.Integer)
     number_two = db.Column(db.Integer)
+    answer = db.Column(db.Integer)
     status = db.Column(db.String)
 
     def __init__(self, number_one=None, number_two=None, status=None):
         self.number_one = number_one
         self.number_two = number_two
         self.status = status
+        self.answer = None
 
     @property
     def links(self):
@@ -20,8 +22,9 @@ class Job(db.Model):
         return links
 
     def __repr__(self):
-        return '<Job id=%r number_one=%r number_two=%r status=%r>' % \
-            (self.id, self.number_one, self.number_two, self.status)
+        return '<Job id=%r number_one=%r number_two=%r answer=%r status=%r>' % \
+            (self.id, self.number_one, self.number_two, self.answer,
+             self.status)
 
     def __eq__(self, other):
         if isinstance(other, Job):

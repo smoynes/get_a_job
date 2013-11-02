@@ -23,9 +23,16 @@ Running tests:
 
     $ python setup.py test
 
-Start the server:
+Create the database:
 
     $ python manage.py create_db
+
+Start the server:
+
     $ python manage.py runserver
     * Running on http://127.0.0.1:5000/
     * Restarting with reloader
+
+Start the background worker:
+
+    $ python manager.py worker
