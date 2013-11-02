@@ -87,7 +87,7 @@ class JobListTestCase(TestCase):
 
 class JobTestCase(TestCase):
 
-    def test_get(self):
+    def test_get_in_progress(self):
         existing_job = self.create_job(
             number_one=2,
             number_two=3,
@@ -99,7 +99,9 @@ class JobTestCase(TestCase):
                 "number_two": 3,
                 "status": 'in_progress',
                 "links": [
-                    {"href": "/jobs", "rel": "index"}
+                    {"href": "/jobs", "rel": "index"},
+                    {"href": "/jobs/{}".format(existing_job.id),
+                     "rel": "self"},
                 ]
             }
         }

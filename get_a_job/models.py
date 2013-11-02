@@ -19,6 +19,9 @@ class Job(db.Model):
     @property
     def links(self):
         links = [{'href': '/jobs', 'rel': 'index'}]
+        if self.id is not None:
+            links.append({'href': '/jobs/{}'.format(self.id),
+                          'rel': 'self'})
         return links
 
     def __repr__(self):
