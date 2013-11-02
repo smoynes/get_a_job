@@ -3,6 +3,8 @@ import os
 import tempfile
 import unittest
 
+from mock import patch, Mock
+
 from get_a_job import create_app
 from get_a_job.models import db, Job
 
@@ -13,7 +15,7 @@ class TestCase(unittest.TestCase):
         self.temp_db_fd, self.temp_db_file = tempfile.mkstemp(suffix='.db')
         config = {
             'SQLALCHEMY_DATABASE_URI': 'sqlite:///' + self.temp_db_file,
-            'CELERY_BROKER_URL': 'redis://localhost/1'
+            'CELERY_BROKER_URL': 'redis://localhost/15'
         }
         app = create_app(__name__, **config)
         db.app = app
@@ -74,9 +76,13 @@ class JobListTestCase(TestCase):
             'job[number_one]': 1,
             'job[number_two]': 2
         }
-        response = self.app.post('/jobs', data=job)
+        mock = Mock(name='tasks')
+        with patch.dict('sys.modules', {'get_a_job.tasks': mock}):
+            response = self.app.post('/jobs', data=job)
         self.assert_redirected(response, 'http://localhost/jobs/1')
-        self.assert_persisted(id=1, job=Job(1, 2, 'in_progress'))
+        expected_job = Job(1, 2, 'in_progress')
+        self.assert_persisted(id=1, job=expected_job)
+        mock.add_number.delay.assert_called_with(expected_job)
 
 
 class JobTestCase(TestCase):
