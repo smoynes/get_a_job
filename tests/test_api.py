@@ -45,8 +45,10 @@ class TestCase(unittest.TestCase):
     def assert_response_not_found(self, response):
         self.assertEquals(response.status_code, 404)
 
-    def create_job(self, number_one, number_two, status):
+    def create_job(self, number_one, number_two, status, answer=None):
         job = Job(number_one, number_two, status)
+        if answer is not None:
+            job.answer = answer
         db.session.add(job)
         db.session.commit()
         return job
@@ -98,6 +100,30 @@ class JobTestCase(TestCase):
                 "number_one": 2,
                 "number_two": 3,
                 "status": 'in_progress',
+                "links": [
+                    {"href": "/jobs", "rel": "index"},
+                    {"href": "/jobs/{}".format(existing_job.id),
+                     "rel": "self"},
+                ]
+            }
+        }
+        self.assert_response_ok(response)
+        job = self.deserialize(response.data)
+        self.assertEquals(job, expected_job)
+
+    def test_get_finished(self):
+        existing_job = self.create_job(
+            number_one=2,
+            number_two=3,
+            status='finished',
+            answer=5)
+        response = self.app.get('/jobs/{}'.format(existing_job.id))
+        expected_job = {
+            "job": {
+                "number_one": 2,
+                "number_two": 3,
+                "answer": 5,
+                "status": 'finished',
                 "links": [
                     {"href": "/jobs", "rel": "index"},
                     {"href": "/jobs/{}".format(existing_job.id),

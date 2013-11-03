@@ -1,5 +1,5 @@
 from flask import Flask, request, make_response
-from flask.ext.restful import Resource, fields, marshal_with, abort
+from flask.ext.restful import Resource, fields, marshal, marshal_with, abort
 
 from .models import db, Job
 
@@ -17,16 +17,27 @@ RESOURCE_FIELDS = {
     }
 }
 
+FINISHED_RESOURCE_FIELDS = {
+    'job': {
+        'status': fields.String,
+        'number_one': fields.Integer(default=None),
+        'number_two': fields.Integer(default=None),
+        'answer': fields.Integer(default=None),
+        'links': fields.Raw,
+    }
+}
 
 class JobResource(Resource):
 
-    @marshal_with(RESOURCE_FIELDS)
     def get(self, job_id):
         job = Job.query.get(job_id)
         if not job:
             abort(404, message="Job {} doesn't exist".format(job_id))
+
+        if job.status == 'finished':
+            return marshal(job, FINISHED_RESOURCE_FIELDS)
         else:
-            return job
+            return marshal(job, RESOURCE_FIELDS)
 
 
 class JobListResource(Resource):
