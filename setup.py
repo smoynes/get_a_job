@@ -9,19 +9,20 @@ with open('LICENSE') as f:
     license = f.read()
 
 requirements = [
-    'Flask==0.10.1',
-    'Flask-RESTful==0.2.5',
+    'Flask',
+    'Flask-RESTful',
     # Undeclared dependency from Flask-RESTful
-    'six == 1.2.0',
-    'Flask-SQLAlchemy==1.0',
-    'Flask-Script==0.6.2',
-    'pysqlite==2.6.0,<2.7.0',
-    'celery==3.0.24',
-    'redis==2.8.0',
+    'six',
+    'Flask-SQLAlchemy',
+    'Flask-Script',
+    'pysqlite',
+    'celery',
+    'redis',
 ]
 
 test_requirements = [
-    'nose==1.3.0',
+    'nose',
+    'mock',
 ]
 
 setup(
