@@ -27,7 +27,7 @@ test_requirements = [
 
 setup(
     name='get_a_job',
-    version='0.0.1',
+    version='0.1.0',
     description='Hypermedia Job Service',
     long_description=readme,
     author='Scott Moynes',
