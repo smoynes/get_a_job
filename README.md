@@ -4,6 +4,10 @@ Get A Job
 An Python implementation of "Get A Job" service from _Designing
 Hypermedia APIs_ by Steve Klabnik.
 
+The application uses Flask and Flask-RESTful for the API,
+Flask-SQLAlchemy and SQLite for persistence, and Celery and Redis for
+background processing.
+
 Development
 -----------
 
@@ -29,6 +33,7 @@ Start the server:
 
 Start the background worker:
 
+    $ service redis-server start
     $ python manager.py worker
 
 Examples
